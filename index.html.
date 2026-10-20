@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MD Market | Premium</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        :root {
+            --bg-color: #000000;
+            --card-bg: #121212;
+            --text-main: #ffffff;
+            --text-dim: #8e8e93;
+            --accent: #ffffff;
+            --accent-dim: #3a3a3c;
+            --border: #2c2c2e;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        header {
+            width: 100%;
+            padding: 30px 0 20px 0;
+            text-align: center;
+            position: sticky;
+            top: 0;
+            background: rgba(0,0,0,0.8);
+            backdrop-filter: blur(20px);
+            z-index: 100;
+        }
+
+        h2 {
+            font-weight: 600;
+            font-size: 24px;
+            letter-spacing: -0.5px;
+            margin: 0;
+        }
+
+        .tagline {
+            font-size: 13px;
+            color: var(--text-dim);
+            margin-top: 4px;
+        }
+
+        .search-box {
+            width: 90%;
+            margin: 20px 0;
+            position: relative;
+        }
+
+        input {
+            width: 100%;
+            padding: 15px 20px;
+            border-radius: 12px;
+            border: 1px solid var(--border);
+            background: var(--card-bg);
+            color: white;
+            font-size: 16px;
+            box-sizing: border-box;
+            transition: border 0.3s ease;
+        }
+
+        input:focus {
+            outline: none;
+            border-color: var(--accent);
+        }
+
+        .btn-ai {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+            background: var(--accent);
+            color: black;
+            border: none;
+            padding: 8px 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            font-size: 12px;
+            cursor: pointer;
+            transition: opacity 0.2s;
+        }
+
+        .btn-ai:active {
+            opacity: 0.7;
+        }
+
+        .container {
+            width: 92%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            padding-bottom: 100px;
+        }
+
+        .empty-state {
+            text-align: center;
+            margin-top: 100px;
+            color: var(--text-dim);
+        }
+
+        .empty-state h3 {
+            font-weight: 400;
+            font-size: 18px;
+            margin-bottom: 10px;
+        }
+
+        .ad-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 16px;
+            display: flex;
+            gap: 15px;
+            align-items: center;
+            transition: background 0.3s ease;
+        }
+
+        .ad-card:active {
+            background: var(--accent-dim);
+        }
+
+        .ad-thumb {
+            width: 80px;
+            height: 80px;
+            background: #1c1c1e;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+        }
+
+        .ad-info {
+            flex: 1;
+        }
+
+        .ad-name {
+            font-weight: 600;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .ad-price {
+            color: var(--text-main);
+            font-weight: 700;
+            font-size: 15px;
+            opacity: 0.9;
+        }
+
+        .fab {
+            position: fixed;
+            bottom: 30px;
+            right: 20px;
+            width: 56px;
+            height: 56px;
+            background: var(--accent);
+            color: black;
+            border-radius: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+            box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+            cursor: pointer;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h2>MD Market</h2>
+        <div class="tagline">Curated Luxury Marketplace</div>
+    </header>
+
+    <div class="search-box">
+        <input type="text" id="searchInput" placeholder="Поиск товаров...">
+        <button class="btn-ai" onclick="searchAI()">AI Search</button>
+    </div>
+
+    <div class="container" id="mainContainer">
+        <div class="empty-state">
+            <h3>Пока здесь пусто</h3>
+            <p>Будь первым, кто создаст тренд</p>
+        </div>
+    </div>
+
+    <div class="fab" onclick="openAddAd()">+</div>
+
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand();
+
+        async function searchAI() {
+            const query = document.getElementById('searchInput').value;
+            if(!query) return;
+
+            // Визуальный эффект поиска
+            document.getElementById('mainContainer').innerHTML = '<div class="empty-state"><h3 style="font-size: 20px;">AI анализирует рынок...</h3><div style="margin-top:20px; font-size: 30px;">🔍</div></div>';
+
+            // В будущем тут будет fetch к нашему серверу
+            setTimeout(() => {
+                document.getElementById('mainContainer').innerHTML = '<div class="empty-state"><h3 style="font-size: 18px;">К сожалению, по запросу "' + query + '" ничего не найдено. Но AI следит за рынком!</h3></div>';
+            }, 1500);
+        }
+
+        function openAddAd() {
+            // Отправляем данные боту, чтобы он запустил процесс подачи объявления
+            tg.sendData("open_add_ad");
+        }
+    </script>
+</body>
+</html>
